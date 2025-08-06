@@ -260,11 +260,12 @@
                         longitude = position.coords.longitude;
                         console.log(`Location: Lat ${latitude}, Lon ${longitude}`);
                         loadingIndicator.textContent = 'Location found.';
-                        getGeocodedLocation(latitude, longitude);
-                        getWeatherData(latitude, longitude);
+                        Promise.all([
+                            getGeocodedLocation(latitude, longitude),
+                            getWeatherData(latitude, longitude)
+                        ]);
                         updateTime();
                         setInterval(() => {
-                            getGeocodedLocation(latitude, longitude);
                             getWeatherData(latitude, longitude);
                         }, 1800000);
                         setInterval(updateTime, 1000);

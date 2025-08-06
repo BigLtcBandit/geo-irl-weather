@@ -5,6 +5,10 @@ A simple, embeddable overlay that displays the user's current location, weather,
 ## Features
 
 *   **Geolocation:** Automatically detects the user's location.
+
+## Hosted Version
+
+A hosted version of this project is available at [https://kickis.fun/](https://kickis.fun/).
 *   **Weather Display:** Shows the current temperature and weather conditions using emoji icons.
 *   **Time and Date:** Displays the current time and rotates to show the date every 15 seconds.
 *   **Customizable Units:** Temperature can be displayed in Celsius (default) or Fahrenheit by adding `?temp=f` to the URL.
