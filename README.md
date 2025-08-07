@@ -1,6 +1,6 @@
 # Geo IRL Weather
 
-A simple, embeddable overlay that displays the user's current location, weather, and time. It's designed to be used as a browser source in streaming software like OBS, but can be used in any web context.
+A simple, embeddable overlay that displays the user's current location, weather, and time. It's designed to be used as a browser source in IRL PRO for Android.
 
 ## Features
 
