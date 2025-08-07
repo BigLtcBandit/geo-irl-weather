@@ -11,15 +11,27 @@ A simple, embeddable overlay that displays the user's current location, weather,
 A hosted version of this project is available at [https://kickis.fun/](https://kickis.fun/).
 *   **Weather Display:** Shows the current temperature and weather conditions using emoji icons.
 *   **Time and Date:** Displays the current time and rotates to show the date every 15 seconds.
-*   **Customizable Units:** Temperature can be displayed in Celsius (default) or Fahrenheit by adding `?temp=f` to the URL.
 *   **Error Handling:** Displays informative error messages if location services are denied or other issues occur.
-*   **Lightweight:** No external libraries (like Tailwind) are used in the final code, it's all vanilla HTML, CSS, and JavaScript.
+*   **Lightweight:** No external libraries are used; it's all vanilla HTML, CSS, and JavaScript.
+
+### Customization
+
+The overlay can be customized by adding the following URL parameters:
+
+*   **Temperature Units:**
+    *   `?temp=c` for Celsius (default)
+    *   `?temp=f` for Fahrenheit
+*   **Update Interval:**
+    *   `?update=[minutes]` to set the weather update frequency.
+    *   The value can be any integer from **1** to **30** minutes.
+    *   If not specified, the default is 30 minutes.
+    *   Example: `?update=5` will update the weather every 5 minutes.
 
 ## Setup
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/your-username/geo-irl-weather.git
+    git clone https://github.com/BigLtcBandit/geo-irl-weather.git
     ```
 2.  **Get a Google Maps API Key:**
     This project uses the Google Geocoding API to get the city and country name from the user's coordinates. You will need to get an API key from the [Google Cloud Console](https://console.cloud.google.com/).
