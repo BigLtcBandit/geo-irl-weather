@@ -120,6 +120,16 @@
             tempUnit = 'fahrenheit';
         }
 
+        // Get update interval from URL, default to 30 minutes
+        let updateInterval = 1800000; // Default to 30 minutes
+        const updateParam = urlParams.get('update');
+        if (updateParam) {
+            const parsedInterval = parseInt(updateParam, 10);
+            if (!isNaN(parsedInterval) && parsedInterval >= 1 && parsedInterval <= 30) {
+                updateInterval = parsedInterval * 60 * 1000;
+            }
+        }
+
         // Variables for time/date rotation
         let displayMode = 0; // 0 for time, 1 for date
         let rotationCounter = 0; // Counts seconds for rotation
@@ -267,7 +277,7 @@
                         updateTime();
                         setInterval(() => {
                             getWeatherData(latitude, longitude);
-                        }, 1800000);
+                        }, updateInterval);
                         setInterval(updateTime, 1000);
                     },
                     (error) => {
