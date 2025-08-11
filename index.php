@@ -1,3 +1,15 @@
+<?php
+// Include the analytics functions
+require_once 'analytics.php';
+
+// Check if the installation has already been tracked
+if (!isset($_COOKIE['geo-weather-installed'])) {
+    // If not, increment the install count
+    increment_install_count();
+    // Set a cookie to prevent tracking this user again. Expires in 10 years.
+    setcookie('geo-weather-installed', 'true', time() + (10 * 365 * 24 * 60 * 60), "/");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
