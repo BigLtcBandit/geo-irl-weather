@@ -27,13 +27,16 @@ function increment_count($filename) {
     $count = get_count($filename);
     $count++;
 
-    // Use file locking to prevent race conditions
-    $fp = fopen($filename, 'w');
-    if (flock($fp, LOCK_EX)) {
-        fwrite($fp, $count);
-        flock($fp, LOCK_UN);
+    // Use file locking to prevent race conditions.
+    // Suppress fopen errors with '@' in case of permission issues.
+    $fp = @fopen($filename, 'w');
+    if ($fp) { // Only proceed if the file was opened successfully
+        if (flock($fp, LOCK_EX)) {
+            fwrite($fp, $count);
+            flock($fp, LOCK_UN);
+        }
+        fclose($fp);
     }
-    fclose($fp);
 }
 
 /**
