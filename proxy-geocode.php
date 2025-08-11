@@ -1,4 +1,7 @@
 <?php
+// Include the analytics functions
+require_once 'analytics.php';
+
 header('Content-Type: application/json');
 
 // IMPORTANT: Replace 'YOUR_GOOGLE_MAPS_API_KEY' with your actual API key.
@@ -40,6 +43,11 @@ curl_close($ch);
 
 // Decode the JSON response from Google
 $data = json_decode($response, true);
+
+// If the request was successful and returned results, increment the usage count
+if ($data && isset($data['status']) && $data['status'] === 'OK') {
+    increment_usage_count();
+}
 
 // Return the data to the client
 echo json_encode($data);
