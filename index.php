@@ -137,7 +137,7 @@ if (!isset($_COOKIE['geo-weather-installed'])) {
         const updateParam = urlParams.get('update');
         if (updateParam) {
             const parsedInterval = parseInt(updateParam, 10);
-            if (!isNaN(parsedInterval) && parsedInterval >= 1 && parsedInterval <= 30) {
+            if (!isNaN(parsedInterval) && parsedInterval >= 15 && parsedInterval <= 30) {
                 updateInterval = parsedInterval * 60 * 1000;
             }
         }
