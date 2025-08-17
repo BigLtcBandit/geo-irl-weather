@@ -4,10 +4,6 @@ require_once 'analytics.php';
 
 header('Content-Type: application/json');
 
-// IMPORTANT: Replace 'YOUR_GOOGLE_MAPS_API_KEY' with your actual API key.
-// This key should be stored securely on your server, not hardcoded if possible (e.g., environment variable).
-$googleApiKey = 'PUT-KEY-HERE';
-
 // Get latitude and longitude from the GET request
 $latitude = isset($_GET['lat']) ? floatval($_GET['lat']) : null;
 $longitude = isset($_GET['lon']) ? floatval($_GET['lon']) : null;
@@ -17,16 +13,19 @@ if ($latitude === null || $longitude === null) {
     exit;
 }
 
-// Construct the Google Geocoding API URL
-$googleApiUrl = "https://maps.googleapis.com/maps/api/geocode/json?latlng={$latitude},{$longitude}&key={$googleApiKey}";
+// Construct the Nominatim API URL for reverse geocoding
+$apiUrl = "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat={$latitude}&lon={$longitude}";
 
 // Initialize cURL session
 $ch = curl_init();
 
 // Set cURL options
-curl_setopt($ch, CURLOPT_URL, $googleApiUrl);
+curl_setopt($ch, CURLOPT_URL, $apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_HEADER, false); // Don't include header in the output
+curl_setopt($ch, CURLOPT_HEADER, false);
+// Set a User-Agent header as required by Nominatim's usage policy
+curl_setopt($ch, CURLOPT_USERAGENT, 'GeoWeatherOverlay/1.0 (https://your-website.com/contact)');
+
 
 // Execute cURL request
 $response = curl_exec($ch);
@@ -41,11 +40,12 @@ if (curl_errno($ch)) {
 // Close cURL session
 curl_close($ch);
 
-// Decode the JSON response from Google
+// Decode the JSON response from Nominatim
 $data = json_decode($response, true);
 
 // If the request was successful and returned results, increment the usage count
-if ($data && isset($data['status']) && $data['status'] === 'OK') {
+// A successful Nominatim response will not have an 'error' key.
+if ($data && !isset($data['error'])) {
     increment_usage_count();
 }
 

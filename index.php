@@ -229,7 +229,7 @@ if (!isset($_COOKIE['geo-weather-installed'])) {
             }
         }
 
-        // Function to fetch geocoded location data from a proxy (requires a backend)
+        // Function to fetch geocoded location data from the Nominatim proxy
         async function getGeocodedLocation(lat, lon) {
             const geocodingProxyUrl = `proxy-geocode.php?lat=${lat}&lon=${lon}`;
             loadingIndicator.textContent = 'Getting location details...';
@@ -240,27 +240,15 @@ if (!isset($_COOKIE['geo-weather-installed'])) {
                 }
                 const data = await response.json();
                 if (data.error) {
-                    throw new Error(data.error);
+                    // Nominatim might return an error object with a message
+                    throw new Error(data.error.message || data.error);
                 }
-                let city = 'Unknown City';
-                let country = 'Unknown Country';
-                if (data.results && data.results.length > 0) {
-                    const addressComponents = data.results[0].address_components;
-                    for (const component of addressComponents) {
-                        if (component.types.includes('locality')) {
-                            city = component.long_name;
-                        }
-                        if (component.types.includes('country')) {
-                            country = component.long_name;
-                        }
-                    }
-                    if (city && country) {
-                        locationElement.textContent = `${city}, ${country}`;
-                    } else {
-                        locationElement.textContent = 'Unknown City/Country';
-                    }
+                if (data.address) {
+                    const city = data.address.city || data.address.town || data.address.village || 'Unknown City';
+                    const country = data.address.country || 'Unknown Country';
+                    locationElement.textContent = `${city}, ${country}`;
                 } else {
-                    locationElement.textContent = 'Unknown Location';
+                    locationElement.textContent = 'Location not found';
                 }
                 errorMessageElement.classList.add('hidden');
             } catch (error) {
